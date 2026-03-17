@@ -1,0 +1,82 @@
+# CityPulse — Setup & Run Guide
+# ================================
+# Run this ONCE on your laptop to get everything working.
+# Takes about 5 minutes total.
+
+# ── PREREQUISITES ─────────────────────────────────────────
+# Make sure you have installed:
+#   Node.js v18+  →  https://nodejs.org
+#   Python 3.10+  →  https://python.org
+#   Git           →  https://git-scm.com
+
+# ── STEP 1: Set up the Backend ────────────────────────────
+cd citypulse/backend
+
+# Create a virtual environment (keeps packages clean)
+python -m venv venv
+
+# Activate it:
+#   Windows:  venv\Scripts\activate
+#   Mac/Linux: source venv/bin/activate
+
+pip install fastapi uvicorn aiosqlite httpx python-multipart pydantic
+
+# Start the backend server:
+python main.py
+# → API running at http://localhost:8000
+# → Swagger docs at http://localhost:8000/docs   ← SHOW THIS TO JUDGES
+
+# ── STEP 2: Set up the Frontend ───────────────────────────
+# Open a NEW terminal tab
+
+cd citypulse/frontend
+npm install
+npm run dev
+# → App running at http://localhost:3000
+
+# ── STEP 3: Verify everything works ───────────────────────
+# 1. Open http://localhost:3000  → see the dashboard
+# 2. Check top-right: should say "● API Live" (green)
+# 3. Go to "File Complaint" tab → submit a complaint
+# 4. Watch the AI triage animate step-by-step
+# 5. Go to http://localhost:8000/docs → show judges the live Swagger API
+
+# ── OPTIONAL: Add HuggingFace for real AI ─────────────────
+# 1. Go to https://huggingface.co → sign up free
+# 2. Settings → Access Tokens → New Token (read)
+# 3. Set it before running backend:
+#    Windows:  set HF_TOKEN=hf_yourtoken
+#    Mac/Linux: export HF_TOKEN=hf_yourtoken
+# 4. Restart backend → now uses real NLP model
+
+# ── PROJECT STRUCTURE ─────────────────────────────────────
+# citypulse/
+# ├── backend/
+# │   ├── main.py           ← FastAPI app entry
+# │   ├── database.py       ← SQLite setup + seed data
+# │   ├── ai_engine.py      ← AI triage (HuggingFace + rule fallback)
+# │   ├── routes/
+# │   │   ├── complaints.py ← POST /api/complaints, GET, PATCH
+# │   │   ├── analytics.py  ← GET /api/analytics/summary, map-points, etc.
+# │   │   └── departments.py
+# │   └── requirements.txt
+# └── frontend/
+#     ├── src/
+#     │   ├── App.jsx       ← Full React app (Dashboard + Portal + Analytics)
+#     │   └── main.jsx
+#     ├── index.html
+#     ├── package.json
+#     └── vite.config.js
+
+# ── API ENDPOINTS (show judges these) ─────────────────────
+# POST   /api/complaints/          → Submit complaint (runs AI triage)
+# POST   /api/complaints/triage    → Preview AI classification only
+# GET    /api/complaints/          → List all complaints
+# GET    /api/complaints/{id}      → Get one complaint + history
+# PATCH  /api/complaints/{id}/status → Update status (Official use)
+# GET    /api/complaints/track/{id}  → Citizen tracking
+# GET    /api/analytics/summary    → Dashboard KPIs
+# GET    /api/analytics/by-department → Dept performance
+# GET    /api/analytics/map-points → Heat map data
+# GET    /api/analytics/recent-trend → Hourly volume
+# GET    /api/analytics/sla-breaches → Overdue complaints
