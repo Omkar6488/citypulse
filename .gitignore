@@ -30,10 +30,13 @@ build/
 .coverage
 htmlcov/
 
-# Frontend builds
-frontend/dist/
-frontend/node_modules/
-frontend/.env.local
+# App builds (root-level)
+dist/
+node_modules/
+.env.local
+
+# Old frontend folder (if exists)
+frontend/
 
 # Backend (entire backend directory is excluded)
 backend/
