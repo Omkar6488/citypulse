@@ -23,7 +23,6 @@ __pycache__/
 .DS_Store
 
 # Build outputs
-dist/
 build/
 *.egg-info/
 .pytest_cache/
@@ -31,7 +30,6 @@ build/
 htmlcov/
 
 # App builds (root-level)
-dist/
 node_modules/
 .env.local
 
