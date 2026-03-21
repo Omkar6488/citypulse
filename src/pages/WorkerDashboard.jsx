@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
 export function WorkerDashboard() {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
@@ -18,7 +20,7 @@ export function WorkerDashboard() {
   const fetchComplaints = async () => {
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch('http://localhost:8000/api/complaints/?limit=100', {
+      const res = await fetch(`${API_BASE_URL}/api/complaints/?limit=100`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -46,7 +48,7 @@ export function WorkerDashboard() {
     try {
       const token = localStorage.getItem('token')
       const res = await fetch(
-        `http://localhost:8000/api/complaints/${complaintId}/status`,
+        `${API_BASE_URL}/api/complaints/${complaintId}/status`,
         {
           method: 'PATCH',
           headers: {
@@ -74,7 +76,7 @@ export function WorkerDashboard() {
     try {
       const token = localStorage.getItem('token')
       const res = await fetch(
-        `http://localhost:8000/api/complaints/${selectedComplaint.ticket_id}/status`,
+        `${API_BASE_URL}/api/complaints/${selectedComplaint.ticket_id}/status`,
         {
           method: 'PATCH',
           headers: {

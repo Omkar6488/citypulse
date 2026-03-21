@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
 export function FileComplaintPage() {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
@@ -119,7 +121,7 @@ export function FileComplaintPage() {
         priority: triageResult.priority
       }
 
-      const res = await fetch('http://localhost:8000/api/complaints/file', {
+      const res = await fetch(`${API_BASE_URL}/api/complaints/file`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

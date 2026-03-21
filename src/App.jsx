@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from "recharts";
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
-const API = "http://localhost:8000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API = `${API_BASE_URL}/api`;
 
 async function apiFetch(path, opts = {}) {
   try {
