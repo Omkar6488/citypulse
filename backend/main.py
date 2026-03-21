@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 import uvicorn
+import os
 from database import init_db
 from routes import complaints, analytics, departments, auth
 
@@ -18,9 +19,18 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Get allowed origins from environment
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+allowed_origins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:5173",
+    FRONTEND_URL
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,4 +51,6 @@ async def health():
     return {"status": "healthy"}
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.getenv("PORT", 8000))
+    host = os.getenv("HOST", "0.0.0.0")
+    uvicorn.run("main:app", host=host, port=port, reload=True)
