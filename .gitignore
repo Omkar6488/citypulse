@@ -36,8 +36,10 @@ node_modules/
 # Old frontend folder (if exists)
 frontend/
 
-# Backend (entire backend directory is excluded)
-backend/
+# Backend Python cache (but backend source IS tracked)
+backend/__pycache__/
+backend/*.pyc
+backend/.pytest_cache/
 
 # Runtime
 *.log
