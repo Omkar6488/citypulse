@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 
 const AuthContext = createContext()
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -19,7 +20,7 @@ export function AuthProvider({ children }) {
 
   const verifyToken = async (token) => {
     try {
-      const res = await fetch('http://localhost:8000/api/auth/me', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -45,7 +46,7 @@ export function AuthProvider({ children }) {
   const register = async (name, email, password, role) => {
     setError(null)
     try {
-      const res = await fetch('http://localhost:8000/api/auth/register', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password, role })
@@ -69,7 +70,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     setError(null)
     try {
-      const res = await fetch('http://localhost:8000/api/auth/login', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -102,7 +103,7 @@ export function AuthProvider({ children }) {
     try {
       const token = localStorage.getItem('token')
       if (token) {
-        await fetch('http://localhost:8000/api/auth/logout', {
+        await fetch(`${API_BASE_URL}/api/auth/logout`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

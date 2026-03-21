@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
 export function CitizenDashboard() {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
@@ -17,7 +19,7 @@ export function CitizenDashboard() {
   const fetchComplaints = async () => {
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch('http://localhost:8000/api/complaints/?limit=20', {
+      const res = await fetch(`${API_BASE_URL}/api/complaints/?limit=20`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -35,7 +37,7 @@ export function CitizenDashboard() {
   const handleTrack = async () => {
     if (!ticketId) return
     try {
-      const res = await fetch(`http://localhost:8000/api/complaints/track/${ticketId}`)
+      const res = await fetch(`${API_BASE_URL}/api/complaints/track/${ticketId}`)
       if (res.ok) {
         setTrackingInfo(await res.json())
       } else {

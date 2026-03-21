@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+
 export function OfficialDashboard() {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
@@ -19,10 +21,10 @@ export function OfficialDashboard() {
     try {
       const token = localStorage.getItem('token')
       const [summRes, complRes] = await Promise.all([
-        fetch('http://localhost:8000/api/analytics/summary', {
+        fetch(`${API_BASE_URL}/api/analytics/summary`, {
           headers: { 'Authorization': `Bearer ${token}` }
         }),
-        fetch('http://localhost:8000/api/complaints/?limit=50', {
+        fetch(`${API_BASE_URL}/api/complaints/?limit=50`, {
           headers: { 'Authorization': `Bearer ${token}` }
         })
       ])
@@ -43,7 +45,7 @@ export function OfficialDashboard() {
     try {
       const token = localStorage.getItem('token')
       const res = await fetch(
-        `http://localhost:8000/api/complaints/${selectedComplaint.ticket_id}/status`,
+        `${API_BASE_URL}/api/complaints/${selectedComplaint.ticket_id}/status`,
         {
           method: 'PATCH',
           headers: {
